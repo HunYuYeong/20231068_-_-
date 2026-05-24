@@ -33,7 +33,7 @@ def load_tickers():
 
 ticker_map = load_tickers()
 
-# 💡 여기서 딕셔너리의 키(종목명)들을 가져와 '가나다순'으로 정렬합니다.
+# 💡 여기서 딕셔너리의 키(종목명)들을 가져와 '가나다순'으로 정렬
 stock_list = sorted(list(ticker_map.keys())) 
 
 # ==========================================
@@ -41,7 +41,7 @@ stock_list = sorted(list(ticker_map.keys()))
 # ==========================================
 st.sidebar.header("⚙️ 포트폴리오 설정")
 
-# options에 가나다순으로 정렬된 stock_list가 들어갑니다.
+# options에 가나다순으로 정렬된 stock_list
 selected_stocks = st.sidebar.multiselect(
     "1. 투자 종목 선택",
     options=stock_list,
@@ -115,7 +115,7 @@ if run_button:
         u_cum = (1 + returns_df.dot(user_weights)).cumprod()
         u_mdd = ((u_cum / u_cum.cummax()) - 1.0).min()
 
-        # [AI 최적화 성과]
+        # [최적화 성과]
         def neg_sharpe(w): return -get_performance(w)[2]
         constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
         bounds = tuple((0.0, 1.0) for _ in range(len(selected_stocks)))
@@ -134,10 +134,10 @@ if run_button:
     st.subheader("💡 성과 요약 비교")
     col1, col2, col3, col4 = st.columns(4)
     
-    col1.metric("누적 수익률", f"{(u_cum.iloc[-1]-1)*100:.2f}%", f"AI: {(o_cum.iloc[-1]-1)*100:.2f}%")
-    col2.metric("연환산 위험(변동성)", f"{u_std*100:.2f}%", f"AI: {o_std*100:.2f}%", delta_color="inverse")
-    col3.metric("최대 낙폭(MDD)", f"{u_mdd*100:.2f}%", f"AI: {o_mdd*100:.2f}%", delta_color="inverse")
-    col4.metric("샤프 지수(효율)", f"{u_sr:.2f}", f"AI: {o_sr:.2f}")
+    col1.metric("누적 수익률", f"{(u_cum.iloc[-1]-1)*100:.2f}%", f"최적: {(o_cum.iloc[-1]-1)*100:.2f}%")
+    col2.metric("연환산 위험(변동성)", f"{u_std*100:.2f}%", f"최적: {o_std*100:.2f}%", delta_color="inverse")
+    col3.metric("최대 낙폭(MDD)", f"{u_mdd*100:.2f}%", f"최적: {o_mdd*100:.2f}%", delta_color="inverse")
+    col4.metric("샤프 지수(효율)", f"{u_sr:.2f}", f"최적: {o_sr:.2f}")
 
     st.divider()
 
